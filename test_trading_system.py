@@ -42,18 +42,18 @@ class TestTradingSystem(TestCase):
 
     def test_buy_nice_timing_when_always_increasing(self):
         self.mock_broker.get_current_price.side_effect = [10, 20, 30, 40, 50]
-        self.system.buy_nice_timing(FAKE_TICKER, FAKE_QUANTITY)
-        self.mock_broker.buy.assert_called_with(FAKE_TICKER, FAKE_QUANTITY, 30)
+        self.system.buy_nice_timing(FAKE_TICKER, FAKE_PRICE)
+        self.mock_broker.buy.assert_called_with(FAKE_TICKER, FAKE_PRICE//30, 30)
 
     def test_buy_nice_timing_when_always_decreasing(self):
         self.mock_broker.get_current_price.side_effect = [50, 40, 30, 20, 10]
-        self.system.buy_nice_timing(FAKE_TICKER, FAKE_QUANTITY)
+        self.system.buy_nice_timing(FAKE_TICKER, FAKE_PRICE)
         self.mock_broker.buy.assert_not_called()
 
     def test_buy_nice_timing_when_fluctuating(self):
         self.mock_broker.get_current_price.side_effect = [50, 40, 55, 60, 70, 65, 45]
-        self.system.buy_nice_timing(FAKE_TICKER, FAKE_QUANTITY)
-        self.mock_broker.buy.assert_called_with(FAKE_TICKER, FAKE_QUANTITY, 60)
+        self.system.buy_nice_timing(FAKE_TICKER, FAKE_PRICE)
+        self.mock_broker.buy.assert_called_with(FAKE_TICKER, FAKE_PRICE//60, 60)
 
     def test_sell_nice_timing_when_always_increasing(self):
         self.mock_broker.get_current_price.side_effect = [10, 20, 30, 40, 50]

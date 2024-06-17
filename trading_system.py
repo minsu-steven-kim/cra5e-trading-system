@@ -22,7 +22,7 @@ class TradingSystem:
     def get_price(self, ticker):
         return self.broker.get_current_price(ticker)
 
-    def buy_nice_timing(self, ticker, quantity):
+    def buy_nice_timing(self, ticker, user_total_price):
         # TODO: #1
         pass
 
