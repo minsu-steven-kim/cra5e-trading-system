@@ -1,5 +1,9 @@
+import sys
+from io import StringIO
+import unittest
 from unittest import TestCase
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
+import random
 
 from kiwer_stock_broker import KiwerStockBroker
 from nemo_stock_broker import NemoStockBroker
@@ -73,6 +77,40 @@ class TestTradingSystem(TestCase):
     def test_select_kiwer_stock_broker(self):
         self.system.select_stock_broker(KiwerStockBroker())
         self.assertIsInstance(self.system.broker, KiwerStockBroker)
+
+    def test_kiwer_stock_broker_login(self):
+        self.system.select_stock_broker(KiwerStockBroker())
+
+        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+            self.system.login(FAKE_USER_ID, FAKE_PASSWORD)
+            login_output = mock_stdout.getvalue()
+
+        self.assertEqual(login_output, 'guest login success\n')
+
+    def test_kiwer_stock_broker_buy(self):
+        self.system.select_stock_broker(KiwerStockBroker())
+
+        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+            self.system.buy(FAKE_TICKER, FAKE_QUANTITY, FAKE_PRICE)
+            login_output = mock_stdout.getvalue()
+
+        self.assertEqual(login_output, 'GOOG : Buy stock ( 650 * 10\n')
+
+    def test_kiwer_stock_broker_sell(self):
+        self.system.select_stock_broker(KiwerStockBroker())
+
+        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+            self.system.sell(FAKE_TICKER, FAKE_QUANTITY, FAKE_PRICE)
+            login_output = mock_stdout.getvalue()
+
+        self.assertEqual(login_output, 'GOOG : Sell stock ( 650 * 10\n')
+
+    def test_kiwer_stock_broker_get_current_price(self):
+        self.system.select_stock_broker(KiwerStockBroker())
+
+        random.seed(100)
+
+        self.assertEqual(self.system.get_price(FAKE_TICKER), 5149)
 
     def test_select_nemo_stock_broker(self):
         self.system.select_stock_broker(NemoStockBroker())
