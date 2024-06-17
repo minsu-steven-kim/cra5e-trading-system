@@ -16,4 +16,4 @@ class KiwerStockBroker(StockBroker):
         self.api.sell(ticker, quantity, price)
 
     def get_current_price(self, ticker):
-        self.api.current_price(ticker)
+        return self.api.current_price(ticker)
