@@ -24,8 +24,23 @@ class TradingSystem:
 
     def buy_nice_timing(self, ticker, user_total_price):
         # TODO: #1
-        pass
+        increase_count = 0
+        current_price = self.get_price(ticker)
+        while True:
+            try:
+                next_price = self.get_price(ticker)
+                if current_price <= next_price:
+                    increase_count += 1
+                else:
+                    increase_count = 0
 
+                if increase_count == 3:
+                    self.buy(ticker, user_total_price//current_price, current_price)
+                    break
+                else:
+                    current_price = next_price
+            except:
+                break
     def sell_nice_timing(self, ticker, quantity):
         # TODO: #2
         pass
