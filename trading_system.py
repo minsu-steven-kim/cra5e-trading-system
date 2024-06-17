@@ -29,18 +29,26 @@ class TradingSystem:
         while True:
             try:
                 next_price = self.get_price(ticker)
-                if current_price <= next_price:
-                    increase_count += 1
-                else:
-                    increase_count = 0
+                increase_count = self.update_increase_count(current_price, increase_count, next_price)
 
-                if increase_count == 3:
+                if self.check_increase_trend(increase_count):
                     self.buy(ticker, user_total_price//current_price, current_price)
                     break
-                else:
-                    current_price = next_price
+
+                current_price = next_price
             except:
                 break
+
+    def update_increase_count(self, current_price, increase_count, next_price):
+        if current_price <= next_price:
+            increase_count += 1
+        else:
+            increase_count = 0
+        return increase_count
+
+    def check_increase_trend(self, increase_count):
+        return increase_count == 3
+
     def sell_nice_timing(self, ticker, quantity):
         # TODO: #2
         pass
