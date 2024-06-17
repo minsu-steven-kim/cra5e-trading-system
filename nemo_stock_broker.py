@@ -16,4 +16,4 @@ class NemoStockBroker(StockBroker):
         self.nemoStock.selling_stock(ticker, price, quantity)
 
     def get_current_price(self, ticker):
-        self.nemoStock.get_market_price(ticker, 1000)
+        print(f"[NEMO]{ticker} current price : {self.nemoStock.get_market_price(ticker, 1000)}")
