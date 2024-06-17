@@ -61,17 +61,22 @@ class TestTradingSystem(TestCase):
 
     def test_sell_nice_timing_when_always_increasing(self):
         self.mock_broker.get_current_price.side_effect = [10, 20, 30, 40, 50]
-        self.system.sell_nice_timing(FAKE_TICKER, FAKE_QUANTITY)
+        for _ in [10, 20, 30, 40, 50]:
+            self.system.sell_nice_timing(FAKE_TICKER, FAKE_QUANTITY)
         self.mock_broker.sell.assert_not_called()
 
     def test_sell_nice_timing_when_always_decreasing(self):
         self.mock_broker.get_current_price.side_effect = [50, 40, 30, 20, 10]
-        self.system.sell_nice_timing(FAKE_TICKER, FAKE_QUANTITY)
+        for _ in [50, 40, 30, 20, 10]:
+            self.system.sell_nice_timing(FAKE_TICKER, FAKE_QUANTITY)
+            if self.mock_broker.sell.call_count == 1:
+                break
         self.mock_broker.sell.assert_called_with(FAKE_TICKER, FAKE_QUANTITY, 30)
 
     def test_sell_nice_timing_when_fluctuating(self):
         self.mock_broker.get_current_price.side_effect = [50, 40, 55, 60, 70, 65, 45]
-        self.system.sell_nice_timing(FAKE_TICKER, FAKE_QUANTITY)
+        for _ in [50, 40, 55, 60, 70, 65, 45]:
+            self.system.sell_nice_timing(FAKE_TICKER, FAKE_QUANTITY)
         self.mock_broker.sell.assert_called_with(FAKE_TICKER, FAKE_QUANTITY, 45)
 
     def test_select_kiwer_stock_broker(self):

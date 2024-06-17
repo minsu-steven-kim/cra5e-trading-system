@@ -1,10 +1,12 @@
 from stock_broker import StockBroker
 
+MOVING_AVG_WINDOW = 2
 
 class TradingSystem:
     broker: StockBroker = None
 
     def __init__(self):
+        self.prices = []
         pass
 
     def select_stock_broker(self, broker: StockBroker):
@@ -50,5 +52,23 @@ class TradingSystem:
         return increase_count == 3
 
     def sell_nice_timing(self, ticker, quantity):
-        # TODO: #2
-        pass
+        if len(self.prices) < MOVING_AVG_WINDOW:
+            self.prices.append(self.get_price(ticker))
+            if len(self.prices) == MOVING_AVG_WINDOW:
+                self.prvPriceAvg = self.avg_of_price()
+            return
+
+        self.prices = [self.prices[1], self.get_price(ticker)]
+        if (self.avg_of_price()) < self.prvPriceAvg:
+            self.sell(ticker, quantity, self.prices[-1])
+        self.prvPriceAvg = self.avg_of_price()
+
+    def avg_of_price(self):
+        return self.sum_of_prices() / MOVING_AVG_WINDOW
+
+    def sum_of_prices(self):
+        priceSum = 0
+        for price in self.prices:
+            priceSum += price
+        return priceSum
+
