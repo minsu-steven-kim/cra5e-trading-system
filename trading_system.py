@@ -11,19 +11,21 @@ class TradingSystem:
         self.broker = broker
 
     def login(self, user_id, password):
-        pass
+        self.broker.login(user_id, password)
 
     def buy(self, ticker, quantity, price):
-        pass
+        self.broker.buy(ticker, quantity, price)
 
     def sell(self, ticker, quantity, price):
-        pass
+        self.broker.sell(ticker, quantity, price)
 
     def get_price(self, ticker):
-        pass
+        return self.broker.get_current_price(ticker)
 
     def buy_nice_timing(self, ticker, quantity):
+        # TODO: #1
         pass
 
     def sell_nice_timing(self, ticker, quantity):
+        # TODO: #2
         pass

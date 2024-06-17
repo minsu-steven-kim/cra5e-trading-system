@@ -1,5 +1,5 @@
 from unittest import TestCase
-from unittest.mock import patch, Mock, call
+from unittest.mock import Mock
 
 from kiwer_stock_broker import KiwerStockBroker
 from nemo_stock_broker import NemoStockBroker
@@ -17,7 +17,7 @@ class TestTradingSystem(TestCase):
 
     def setUp(self):
         self.system = TradingSystem()
-        self.mock_broker = Mock()
+        self.mock_broker = Mock(spec=StockBroker)
         self.system.select_stock_broker(self.mock_broker)
 
     def test_select_stock_broker(self):
